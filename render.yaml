@@ -1,0 +1,41 @@
+services:
+  # Servidor Eureka
+  - type: web
+    name: eureka-server
+    env: docker
+    dockerContext: .
+    dockerfilePath: rental-vehicle/Dockerfile # Ajusta si tu Dockerfile está en otra ruta
+    plan: free
+
+  # Microservicio de Vehículos
+  - type: web
+    name: vehicle-service
+    env: docker
+    dockerContext: .
+    dockerfilePath: vehicle/Dockerfile
+    plan: free
+    envVars:
+      - key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+        value: http://eureka-server:8761/eureka
+
+  # Microservicio de Operaciones
+  - type: web
+    name: operation-service
+    env: docker
+    dockerContext: .
+    dockerfilePath: operation/Dockerfile
+    plan: free
+    envVars:
+      - key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+        value: http://eureka-server:8761/eureka
+
+  # API Gateway (El único con puerto público expuesto)
+  - type: web
+    name: gateway-service
+    env: docker
+    dockerContext: .
+    dockerfilePath: gateway/Dockerfile
+    plan: free
+    envVars:
+      - key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+        value: http://eureka-server:8761/eureka
