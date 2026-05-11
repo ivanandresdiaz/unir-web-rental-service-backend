@@ -1,13 +1,13 @@
 services:
-  # Servidor Eureka
+  # 1. EUREKA
   - type: web
     name: eureka-server
     env: docker
     dockerContext: .
-    dockerfilePath: rental-vehicle/Dockerfile # Ajusta si tu Dockerfile está en otra ruta
+    dockerfilePath: rental-vehicle/Dockerfile
     plan: free
 
-  # Microservicio de Vehículos
+  # 2. VEHICLE SERVICE
   - type: web
     name: vehicle-service
     env: docker
@@ -17,8 +17,12 @@ services:
     envVars:
       - key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
         value: http://eureka-server:8761/eureka
+      - key: SPRING_DATASOURCE_URL
+        fromDatabase:
+          name: vehicle-db
+          property: connectionString
 
-  # Microservicio de Operaciones
+  # 3. OPERATION SERVICE
   - type: web
     name: operation-service
     env: docker
@@ -28,8 +32,12 @@ services:
     envVars:
       - key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
         value: http://eureka-server:8761/eureka
+      - key: SPRING_DATASOURCE_URL
+        fromDatabase:
+          name: operation-db
+          property: connectionString
 
-  # API Gateway (El único con puerto público expuesto)
+  # 4. GATEWAY
   - type: web
     name: gateway-service
     env: docker
@@ -39,3 +47,14 @@ services:
     envVars:
       - key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
         value: http://eureka-server:8761/eureka
+
+# 5. BASES DE DATOS (POSTGRES NATIVO DE RENDER)
+databases:
+  - name: vehicle-db
+    databaseName: vehicle_db
+    user: postgres
+    plan: free
+  - name: operation-db
+    databaseName: operation_db
+    user: postgres
+    plan: free
