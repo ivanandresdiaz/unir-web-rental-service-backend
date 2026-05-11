@@ -52,9 +52,7 @@ services:
 databases:
   - name: vehicle-db
     databaseName: vehicle_db
-    user: postgres
     plan: free
   - name: operation-db
     databaseName: operation_db
-    user: postgres
     plan: free
