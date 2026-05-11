@@ -1,0 +1,94 @@
+services:
+
+  # =========================
+  # EUREKA
+  # =========================
+  eureka:
+    build:
+      context: ../rental-vehicle
+    container_name: eureka-server
+    ports:
+      - "8761:8761"
+
+  # =========================
+  # VEHICLE DATABASE
+  # =========================
+  vehicle-db:
+    image: postgres:16
+    container_name: vehicle-db
+    environment:
+      POSTGRES_DB: vehicle_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./docker/vehicle-db/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  # =========================
+  # OPERATION DATABASE
+  # =========================
+  operation-db:
+    image: postgres:16
+    container_name: operation-db
+    environment:
+      POSTGRES_DB: operation_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5434:5432"
+    volumes:
+      - ./docker/operation-db/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  # =========================
+  # VEHICLE MICROSERVICE
+  # =========================
+  vehicle:
+    build:
+      context: ../vehicle
+    container_name: vehicle-service
+    ports:
+      - "8091:8091"
+    depends_on:
+      - vehicle-db
+      - eureka
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://vehicle-db:5432/vehicle_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka
+
+  # =========================
+  # OPERATION MICROSERVICE
+  # =========================
+  operation:
+    build:
+      context: ../operation
+    container_name: operation-service
+    ports:
+      - "8092:8092"
+    depends_on:
+      - operation-db
+      - vehicle
+      - eureka
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://operation-db:5432/operation_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka
+
+  # =========================
+  # GATEWAY
+  # =========================
+  gateway:
+    build:
+      context: ../gateway
+    container_name: gateway-service
+    ports:
+      - "8080:8080"
+    depends_on:
+      - vehicle
+      - operation
+      - eureka
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka
