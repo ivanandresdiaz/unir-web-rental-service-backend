@@ -1,0 +1,338 @@
+{
+  "info": {
+    "_postman_id": "421076b4-a4e1-4da2-affa-dd6d784e3937",
+    "name": "Vehicle-rent-unir",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "19096178"
+  },
+  "item": [
+    {
+      "name": "vehicle",
+      "item": [
+        {
+          "name": "saveVehicle",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"brand\": \"Renaul\",\r\n  \"model\": \"Onix turbo 2024\",\r\n  \"color\": \"Blanco\",\r\n  \"plate\": \"CTN123\",\r\n  \"active\":true,\r\n  \"dailyPrice\": 100000,\r\n  \"statusId\": 1\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/v1/vehicle/",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "vehicle",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getVehicleId",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/v1/vehicle/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "vehicle",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "updateVehicleById",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"id\": 5,\r\n    \"brand\": \"Chevrolet\",\r\n    \"model\": \"Onix turbo 2025\",\r\n    \"color\": \"Blanco\",\r\n    \"plate\": \"CTN125\",\r\n    \"dailyPrice\": 900000.0,\r\n    \"statusId\": 1,\r\n    \"active\": true\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/v1/vehicle/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "vehicle",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DeleteVehicleById",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/v1/vehicle/5",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "vehicle",
+                "5"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "lookVehicleForByParameter",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/v1/vehicle?model=2026&brand=Renault",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "vehicle"
+              ],
+              "query": [
+                {
+                  "key": "model",
+                  "value": "2026"
+                },
+                {
+                  "key": "brand",
+                  "value": "Renault"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "lookVehicleIsAvailable",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/v1/vehicle/3/availability",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "vehicle",
+                "3",
+                "availability"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "updateStatusVehicle",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/v1/vehicle/3/status/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "vehicle",
+                "3",
+                "status",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "operation",
+      "item": [
+        {
+          "name": "CreateRentleInToOperation",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"customerId\": 1,\r\n  \"vehicleId\": 1,\r\n  \"startDate\": \"2026-05-11T10:00:00\",\r\n  \"endDate\": \"2026-05-13T10:00:00\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/v1/operation/rent",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "operation",
+                "rent"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GetRentaById",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/v1/operation/rent/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "operation",
+                "rent",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "UpdateCanceltatedRent",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/v1/operation/rent/1/cancel",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "operation",
+                "rent",
+                "1",
+                "cancel"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "New Request",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    }
+  ]
+}
