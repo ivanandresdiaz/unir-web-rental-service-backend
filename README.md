@@ -5,6 +5,34 @@ This project is part of the _Construcción de Aplicaciones Web_ assignment at UN
 
 ---
 
+## Quick start with Docker Compose (recommended)
+
+This single command builds all four JARs, builds the images and starts the entire stack:
+
+```bash
+# 1. Build every Spring Boot JAR (run once, and after every code change)
+cd rental-vehicle
+./gradlew clean build
+cd ..
+
+cd gateway
+./gradlew clean build
+cd ..
+
+cd vehicle
+./gradlew clean build
+cd ..
+
+cd operation
+./gradlew clean build
+cd .. 
+
+# 2. Start the stack (Eureka, Gateway, both microservices and both databases)
+cd infraestructure
+docker compose up --build -d
+```
+
+
 ## Architecture
 
 ```
@@ -97,22 +125,6 @@ To run locally without Docker:
 - PostgreSQL 16 running locally
 
 ---
-
-## Quick start with Docker Compose (recommended)
-
-This single command builds all four JARs, builds the images and starts the entire stack:
-
-```bash
-# 1. Build every Spring Boot JAR (run once, and after every code change)
-./gradlew clean bootJar -p rental-vehicle
-./gradlew clean bootJar -p gateway
-./gradlew clean bootJar -p vehicle
-./gradlew clean bootJar -p operation
-
-# 2. Start the stack (Eureka, Gateway, both microservices and both databases)
-cd infraestructure
-docker compose up --build -d
-```
 
 > **Windows note:** replace `./gradlew` with `gradlew.bat`.
 
