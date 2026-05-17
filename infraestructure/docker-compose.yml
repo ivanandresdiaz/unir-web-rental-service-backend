@@ -1,5 +1,4 @@
 services:
-
   # =========================
   # EUREKA
   # =========================
@@ -11,37 +10,37 @@ services:
       - "8761:8761"
 
   # =========================
-  # VEHICLE DATABASE
+  # POSTGRES LOCAL (deshabilitado — se usa Neon vía .env)
+  # Para reactivar: quita los # de abajo y usa: docker compose --profile local-postgres up -d
   # =========================
-  vehicle-db:
-    image: postgres:16
-    container_name: vehicle-db
-    environment:
-      POSTGRES_DB: vehicle_db
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-    ports:
-      - "5433:5432"
-    volumes:
-      - ./docker/vehicle-db/init.sql:/docker-entrypoint-initdb.d/init.sql
+  # vehicle-db:
+  #   profiles: ["local-postgres"]
+  #   image: postgres:16
+  #   container_name: vehicle-db
+  #   environment:
+  #     POSTGRES_DB: vehicle_db
+  #     POSTGRES_USER: postgres
+  #     POSTGRES_PASSWORD: postgres
+  #   ports:
+  #     - "5433:5432"
+  #   volumes:
+  #     - ./docker/vehicle-db/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  # operation-db:
+  #   profiles: ["local-postgres"]
+  #   image: postgres:16
+  #   container_name: operation-db
+  #   environment:
+  #     POSTGRES_DB: operation_db
+  #     POSTGRES_USER: postgres
+  #     POSTGRES_PASSWORD: postgres
+  #   ports:
+  #     - "5434:5432"
+  #   volumes:
+  #     - ./docker/operation-db/init.sql:/docker-entrypoint-initdb.d/init.sql
 
   # =========================
-  # OPERATION DATABASE
-  # =========================
-  operation-db:
-    image: postgres:16
-    container_name: operation-db
-    environment:
-      POSTGRES_DB: operation_db
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-    ports:
-      - "5434:5432"
-    volumes:
-      - ./docker/operation-db/init.sql:/docker-entrypoint-initdb.d/init.sql
-
-  # =========================
-  # VEHICLE MICROSERVICE
+  # VEHICLE MICROSERVICE (Neon vía .env)
   # =========================
   vehicle:
     build:
@@ -49,17 +48,20 @@ services:
     container_name: vehicle-service
     ports:
       - "8091:8091"
+    env_file:
+      - .env
     depends_on:
-      - vehicle-db
       - eureka
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://vehicle-db:5432/vehicle_db
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_DATASOURCE_URL: ${VEHICLE_DB_URL}
+      SPRING_DATASOURCE_USERNAME: ${VEHICLE_DB_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${VEHICLE_DB_PASSWORD}
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka
+      EUREKA_INSTANCE_HOSTNAME: vehicle
+      EUREKA_INSTANCE_PREFER_IP_ADDRESS: "false"
 
   # =========================
-  # OPERATION MICROSERVICE
+  # OPERATION MICROSERVICE (Neon vía .env)
   # =========================
   operation:
     build:
@@ -67,15 +69,18 @@ services:
     container_name: operation-service
     ports:
       - "8092:8092"
+    env_file:
+      - .env
     depends_on:
-      - operation-db
       - vehicle
       - eureka
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://operation-db:5432/operation_db
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_DATASOURCE_URL: ${OPERATION_DB_URL}
+      SPRING_DATASOURCE_USERNAME: ${OPERATION_DB_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${OPERATION_DB_PASSWORD}
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka
+      EUREKA_INSTANCE_HOSTNAME: operation
+      EUREKA_INSTANCE_PREFER_IP_ADDRESS: "false"
 
   # =========================
   # GATEWAY
