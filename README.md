@@ -1,6 +1,6 @@
 # Rental Vehicle — Microservices System
 
-A microservices-based vehicle rental management system built with **Java 17**, **Spring Boot 3.5**, **Spring Cloud 2025**, **PostgreSQL 16** and **Docker**.
+A microservicessss-based vehicle rental management system built with **Java 17**, **Spring Boot 3.5**, **Spring Cloud 2025**, **PostgreSQL 16** and **Docker**.
 This project is part of the _Construcción de Aplicaciones Web_ assignment at UNIR (Universidad Internacional de La Rioja).
 
 ---
@@ -25,13 +25,12 @@ cd ..
 
 cd operation
 ./gradlew clean build
-cd .. 
+cd ..
 
 # 2. Start the stack (Eureka, Gateway, both microservices and both databases)
 cd infraestructure
 docker compose up --build -d
 ```
-
 
 ## Architecture
 
