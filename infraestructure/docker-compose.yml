@@ -99,3 +99,4 @@ services:
       - eureka
     environment:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-https://unir-web-rental-service-frontend.vercel.app,http://localhost:5173}
